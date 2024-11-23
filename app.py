@@ -14,47 +14,58 @@ eventBuilder = []
 
 class CourtReserveParser(HTMLParser):
 
-    building = False
-    parsing = False
-    events = []
-    eventBuilder = []
+    api_list_url = ""
 
-    def handle_starttag(self, tag, attrs):
-        if attrs:
-            for attr in attrs:
-                if attr[0] == "class" and attr[1] == "details":
-                    self.building = True
+    # building = False
+    # parsing = False
+    # events = []
+    # eventBuilder = []
+
+    # def handle_starttag(self, tag, attrs):
+    #     if attrs:
+    #         for attr in attrs:
+    #             if attr[0] == "class" and attr[1] == "details":
+    #                 self.building = True
                     
-                elif attr[0] =="class" and attr[1] == "pjlv5":
-                    self.building = False
+    #             elif attr[0] =="class" and attr[1] == "pjlv5":
+    #                 self.building = False
                 
 
     def handle_data(self, data):
+        if "events.courtreserve.com" in data:
+            for index, line in enumerate(data.split("'")):
+                if index == 3:
+                    self.api_list_url = line
+                
 
-        if self.building:
-            whitespaceFixedData = re.sub(' +', ' ', data.replace("\n", "").replace("\r", ""))
-            if whitespaceFixedData != ' ':
-                if whitespaceFixedData == 'TENNIS FAST FEED OWES ' or whitespaceFixedData == 'PICKLEBALL ADULT CLINICS AND FAST FEEDS ':
-                    self.eventBuilder = []
-                elif "remaining" in whitespaceFixedData:
-                    self.eventBuilder.append(whitespaceFixedData)
-                    self.events.append(self.eventBuilder)
-                else: 
-                    self.eventBuilder.append(whitespaceFixedData)
+        # if self.building:
+        #     whitespaceFixedData = re.sub(' +', ' ', data.replace("\n", "").replace("\r", ""))
+        #     if whitespaceFixedData != ' ':
+        #         if whitespaceFixedData == 'TENNIS FAST FEED OWES ' or whitespaceFixedData == 'PICKLEBALL ADULT CLINICS AND FAST FEEDS ':
+        #             self.eventBuilder = []
+        #         elif "remaining" in whitespaceFixedData:
+        #             self.eventBuilder.append(whitespaceFixedData)
+        #             self.events.append(self.eventBuilder)
+        #         else: 
+        #             self.eventBuilder.append(whitespaceFixedData)
 
-    def printAllData(self):
-        for event in self.events:
-            print(event)
+    # def printAllData(self):
+    #     for event in self.events:
+    #         print(event)
 
 parser = CourtReserveParser()
 
 
 @app.route("/")
 def home():
-    headers = {'FilterText':'fast feed'}
-    response = requests.get(os.getenv("EVENT_API_PATH"),headers)
-    parser.feed(response.json()["data"])
-    parser.printAllData()
+    # headers = {'FilterText':'fast feed'}
+    response = requests.get(os.getenv("EVENT_PAGE_PATH"))
+    # print(response.content)
+    response_data = response.content.decode('utf-8') 
+    parser.feed(response_data)
+    print(parser.api_list_url)
+    # parser.feed(response.json()["data"])
+    # parser.printAllData()
     return "Hello World"
 
 @app.route("/health")
