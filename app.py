@@ -11,7 +11,6 @@ load_dotenv()
 
 @app.route("/")
 def home():
-
     return "Hello World, I am Volley! Lousiville Indoor Racquet Club's Admin Control."
 
 @app.route("/health")
