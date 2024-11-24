@@ -8,66 +8,20 @@ import re
 app = Flask(__name__)
 load_dotenv()
 
-events = []
-eventBuilder = []
-
-
-class CourtReserveParser(HTMLParser):
-
-    api_list_url = ""
-
-    # building = False
-    # parsing = False
-    # events = []
-    # eventBuilder = []
-
-    # def handle_starttag(self, tag, attrs):
-    #     if attrs:
-    #         for attr in attrs:
-    #             if attr[0] == "class" and attr[1] == "details":
-    #                 self.building = True
-                    
-    #             elif attr[0] =="class" and attr[1] == "pjlv5":
-    #                 self.building = False
-                
-
-    def handle_data(self, data):
-        if "events.courtreserve.com" in data:
-            for index, line in enumerate(data.split("'")):
-                if index == 3:
-                    self.api_list_url = line
-                
-
-        # if self.building:
-        #     whitespaceFixedData = re.sub(' +', ' ', data.replace("\n", "").replace("\r", ""))
-        #     if whitespaceFixedData != ' ':
-        #         if whitespaceFixedData == 'TENNIS FAST FEED OWES ' or whitespaceFixedData == 'PICKLEBALL ADULT CLINICS AND FAST FEEDS ':
-        #             self.eventBuilder = []
-        #         elif "remaining" in whitespaceFixedData:
-        #             self.eventBuilder.append(whitespaceFixedData)
-        #             self.events.append(self.eventBuilder)
-        #         else: 
-        #             self.eventBuilder.append(whitespaceFixedData)
-
-    # def printAllData(self):
-    #     for event in self.events:
-    #         print(event)
-
-parser = CourtReserveParser()
-
 
 @app.route("/")
 def home():
-    # headers = {'FilterText':'fast feed'}
-    response = requests.get(os.getenv("EVENT_PAGE_PATH"))
-    # print(response.content)
-    response_data = response.content.decode('utf-8') 
-    parser.feed(response_data)
-    print(parser.api_list_url)
-    # parser.feed(response.json()["data"])
-    # parser.printAllData()
-    return "Hello World"
+
+    return "Hello World, I am Volley! Lousiville Indoor Racquet Club's Admin Control."
 
 @app.route("/health")
 def healthCheck():
     return "Volley is doing great!"
+
+@app.route("/auth_modal")
+def auth_model():
+    return "Auth Modal Incoming"
+
+@app.route("/credentials")
+def credential_check():
+    return "Checking Credentials"
