@@ -1,0 +1,10 @@
+{
+    "id": "little-wind-6528",
+    "type": "flask",
+    "labels": [],
+    "resources": {
+        "cpu": 0.5,
+        "ram": 1,
+        "gpu": 0
+    }
+}
