@@ -16,6 +16,8 @@ load_dotenv()
 def home():
     return jsonify({"Success": "Hello World, I am Volley! Lousiville Indoor Racquet Club's Admin Control."})
 
+
+# Deployment Error Lets Try Again
 @app.route("/credentials_check")
 @cross_origin(supports_credentials=True)
 def credential_check(request):
