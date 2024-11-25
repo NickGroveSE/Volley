@@ -16,14 +16,13 @@ load_dotenv()
 def home():
     return jsonify({"Success": "Hello World, I am Volley! Lousiville Indoor Racquet Club's Admin Control."})
 
-@app.route("/health")
-def healthCheck():
-    return "Volley is doing great!"
+@app.route("/credentials_check")
+@cross_origin(supports_credentials=True)
+def credential_check(request):
+    auth_header = request.headers.get('Authorization')
 
-@app.route("/auth_modal")
-def auth_model():
-    return "Auth Modal Incoming"
-
-@app.route("/credentials")
-def credential_check():
-    return "Checking Credentials"
+    if auth_header:
+        return jsonify({"Authorized": auth_header})
+    else:
+        return 'Unauthorized', 401
+    
