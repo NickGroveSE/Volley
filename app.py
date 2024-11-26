@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -14,11 +14,11 @@ def home():
 # Deployment Error Lets Try Again
 @app.route("/credentials_check")
 @cross_origin(supports_credentials=True)
-def credential_check(request):
+def credential_check():
     auth_header = request.headers.get('Authorization')
 
     if auth_header:
         return jsonify({"Authorized": auth_header})
     else:
-        return 'Unauthorized', 401
+        return jsonify({"Unauthorized": "401"})
     
